@@ -1,10 +1,10 @@
-// Fill out your copyright notice in the Description page of Project Settings.
+// Copyright 1998-2019 Epic Games, Inc. All Rights Reserved.
 
 using UnrealBuildTool;
 
-public class FirstGameUE4_23_1 : ModuleRules
+public class FirstProject : ModuleRules
 {
-	public FirstGameUE4_23_1(ReadOnlyTargetRules Target) : base(Target)
+	public FirstProject(ReadOnlyTargetRules Target) : base(Target)
 	{
 		PCHUsage = PCHUsageMode.UseExplicitOrSharedPCHs;
 	
