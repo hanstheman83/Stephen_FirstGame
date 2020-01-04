@@ -48,6 +48,8 @@ ACollider::ACollider()
 	OurMovementComponent = CreateDefaultSubobject< UColliderMovementComponent>(TEXT("OurMovementComponent"));
 	OurMovementComponent->UpdatedComponent = RootComponent;
 
+	CameraInput = FVector2D(0.f, 0.f);
+
 	AutoPossessPlayer = EAutoReceiveInput::Player0;
 
 }
@@ -64,6 +66,15 @@ void ACollider::Tick(float DeltaTime)
 {
 	Super::Tick(DeltaTime);
 
+	// Actor rotates by mouse movement..
+	FRotator NewRotation = GetActorRotation();
+	NewRotation.Yaw += CameraInput.X;
+	SetActorRotation(NewRotation);
+
+	FRotator NewSpringArmRotation = SpringArm->GetComponentRotation();
+	NewSpringArmRotation.Pitch = FMath::Clamp(NewSpringArmRotation.Pitch + CameraInput.Y, -80.f, -15.f); //TODO remove magic #s
+	SpringArm->SetWorldRotation(NewSpringArmRotation);
+
 }
 
 // Called to bind functionality to input
@@ -73,6 +84,9 @@ void ACollider::SetupPlayerInputComponent(UInputComponent* PlayerInputComponent)
 
 	PlayerInputComponent->BindAxis(TEXT("MoveForward"), this, &ACollider::MoveForward);
 	PlayerInputComponent->BindAxis(TEXT("MoveRight"), this,&ACollider::MoveRight);
+	
+	PlayerInputComponent->BindAxis(TEXT("CameraPitch"), this, &ACollider::PitchCamera);
+	PlayerInputComponent->BindAxis(TEXT("CameraYaw"), this,&ACollider::YawCamera);
 
 }
 
@@ -97,5 +111,14 @@ void ACollider::MoveRight(float Input)
 UPawnMovementComponent* ACollider::GetMovementComponent() const // const = cant change stuff in class
 {
 	return OurMovementComponent;
+}
+
+void ACollider::PitchCamera(float AxisValue) // TODO, camera attached to SpringArm, pitching SpringArm - rename ? 
+{
+	CameraInput.Y = AxisValue;
+}
+void ACollider::YawCamera(float AxisValue) //TODO rename, rotates Actor, and indirectly rotates Camera attached to SpringArm
+{
+	CameraInput.X = AxisValue;
 }
 
