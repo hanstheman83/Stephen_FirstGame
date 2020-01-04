@@ -32,9 +32,27 @@ public:
 	UPROPERTY(VisibleAnywhere, Category = "Mesh")
 	class USphereComponent* SphereComponent;
 
-	FORCEINLINE UStaticMeshComponent* GetMeshComponent() { return MeshComponent; } // FORCEINLINE with return declaration in header is FASTER!
+	UPROPERTY(VisibleAnywhere, Category = "Mesh")
+	class UCameraComponent* Camera;
+
+	UPROPERTY(VisibleAnywhere, Category = "Mesh")
+	class USpringArmComponent* SpringArm;
+
+	// FORCEINLINE with return declaration in header is FASTER!
+	FORCEINLINE UStaticMeshComponent* GetMeshComponent() { return MeshComponent; } 
 	FORCEINLINE void SetMeshComponent(UStaticMeshComponent* Mesh) { MeshComponent = Mesh; }
 	
-	FORCEINLINE USphereComponent* GetSphereComponent() { return SphereComponent; } // FORCEINLINE with return declaration in header is FASTER!
+	FORCEINLINE USphereComponent* GetSphereComponent() { return SphereComponent; }
 	FORCEINLINE void SetSphereComponent(USphereComponent* Sphere) { SphereComponent = Sphere; }
+	
+	FORCEINLINE UCameraComponent* GetCamerahComponent() { return Camera; } 
+	FORCEINLINE void SetCameraComponent(UCameraComponent* InCamera) { Camera = InCamera; }
+	
+	FORCEINLINE USpringArmComponent* GetSpringArmComponent() { return SpringArm; }
+	FORCEINLINE void SetSphereComponent(USpringArmComponent* InSpringArm) { SpringArm = InSpringArm; }
+
+private:
+
+	void MoveForward(float Input);
+	void MoveRight(float Input);
 };
