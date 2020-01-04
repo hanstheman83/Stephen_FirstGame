@@ -8,6 +8,7 @@
 #include "Components/InputComponent.h"
 #include "GameFramework/SpringArmComponent.h"
 #include "Camera/CameraComponent.h"
+#include "ColliderMovementComponent.h"
 
 
 
@@ -44,6 +45,9 @@ ACollider::ACollider()
 	Camera = CreateDefaultSubobject<UCameraComponent>(TEXT("Camera"));
 	Camera->SetupAttachment(SpringArm, USpringArmComponent::SocketName);
 
+	OurMovementComponent = CreateDefaultSubobject< UColliderMovementComponent>(TEXT("OurMovementComponent"));
+	OurMovementComponent->UpdatedComponent = RootComponent;
+
 	AutoPossessPlayer = EAutoReceiveInput::Player0;
 
 }
@@ -75,12 +79,23 @@ void ACollider::SetupPlayerInputComponent(UInputComponent* PlayerInputComponent)
 void ACollider::MoveForward(float Input)
 {
 	FVector Forward = GetActorForwardVector();
-	AddMovementInput(Input * Forward);
+	if (OurMovementComponent)
+	{
+		OurMovementComponent->AddInputVector(Input * Forward);
+	}
 }
 
 void ACollider::MoveRight(float Input)
 {
 	FVector Right = GetActorRightVector();
-	AddMovementInput(Input * Right);
+	if (OurMovementComponent)
+	{
+		OurMovementComponent->AddInputVector(Input * Right);
+	}
+}
+
+UPawnMovementComponent* ACollider::GetMovementComponent() const // const = cant change stuff in class
+{
+	return OurMovementComponent;
 }
 

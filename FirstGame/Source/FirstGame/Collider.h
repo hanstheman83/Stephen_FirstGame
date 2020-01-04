@@ -38,6 +38,11 @@ public:
 	UPROPERTY(VisibleAnywhere, Category = "Mesh")
 	class USpringArmComponent* SpringArm;
 
+	UPROPERTY(VisibleAnywhere, Category = "Mesh")
+	class UColliderMovementComponent* OurMovementComponent;
+
+	virtual UPawnMovementComponent* GetMovementComponent() const override;
+
 	// FORCEINLINE with return declaration in header is FASTER!
 	FORCEINLINE UStaticMeshComponent* GetMeshComponent() { return MeshComponent; } 
 	FORCEINLINE void SetMeshComponent(UStaticMeshComponent* Mesh) { MeshComponent = Mesh; }
